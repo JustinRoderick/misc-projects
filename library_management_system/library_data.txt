@@ -1,0 +1,20 @@
+
+Patrons in the library:
+Patron Name: John Doe
+Patron ID: P123
+Borrowed Books: 0
+Patron Name: Jane Smith
+Patron ID: P124
+Borrowed Books: 0
+
+Books in the library:
+Title: 1984
+Author: George Orwell
+ISBN: 9780451524935
+Available: Yes
+
+Title: To Kill a Mockingbird
+Author: Harper Lee
+ISBN: 9780060935467
+Available: Yes
+

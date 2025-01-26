@@ -1,0 +1,15 @@
+Store Name: Tech Gadget Store
+========================================
+
+Products:
+----------------------------------------
+Product: Laptop, Price: $1000.00, Stock: 8
+Product: Smartphone, Price: $500.00, Stock: 19
+
+Customers:
+----------------------------------------
+Customer: John Doe, Email: john@example.com, Orders: 1
+
+Orders:
+----------------------------------------
+Order ID: 1001, Customer: John Doe, Total Price: $2500.00, Status: Processing
