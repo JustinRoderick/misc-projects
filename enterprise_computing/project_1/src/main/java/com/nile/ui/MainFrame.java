@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
     private List<Item> Inventory;
     private int item_num = 1;
     private JTable cartTable;
+    private DefaultTableModel tableModel;
     private JTextField itemIdField, quantityField;
     private JTextArea previousItem, currentTotal;
     private JLabel itemIdLabel, quantityLabel, previousItemLabel, currentTotalLabel;
@@ -23,7 +24,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         setTitle("Nile Dot Com");
-        setSize(800, 600);
+        setSize(1200, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         try{
@@ -38,10 +39,16 @@ public class MainFrame extends JFrame {
         quantityField = new JTextField();
         previousItem = new JTextArea();
         currentTotal = new JTextArea();
+        previousItem.setEditable(false);
+        previousItem.setLineWrap(true);
+        previousItem.setWrapStyleWord(true);
+        currentTotal.setEditable(false);
+        currentTotal.setLineWrap(true);
+        currentTotal.setWrapStyleWord(true);
         itemIdLabel = new JLabel("Enter Item ID for item #1:");
         quantityLabel = new JLabel("Enter quantity for item #1:");
         previousItemLabel = new JLabel("Details for item #1:");
-        currentTotalLabel = new JLabel("Current Subtotal for " + cart.size() + " items(s)");
+        currentTotalLabel = new JLabel("Current Subtotal for 0 items(s)");
         inputPanel.add(itemIdLabel);
         inputPanel.add(itemIdField);
         inputPanel.add(quantityLabel);
@@ -60,8 +67,16 @@ public class MainFrame extends JFrame {
         JButton exitButton = new JButton("Exit");
 
 
+//       String[] columns = {"Item ID", "Description", "Price", "Quantity"};
+//        cartTable = new JTable(new Object[0][4], columns);
         String[] columns = {"Item ID", "Description", "Price", "Quantity"};
-        cartTable = new JTable(new Object[0][4], columns);
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        cartTable = new JTable(tableModel);
 
 
         setLayout(new BorderLayout());
@@ -90,7 +105,10 @@ public class MainFrame extends JFrame {
         int nextItemNum = cart.size() + 1;
         itemIdLabel.setText("Enter Item ID for item #" + nextItemNum + ":");
         quantityLabel.setText("Enter quantity for item #" + nextItemNum + ":");
+        previousItemLabel.setText("Details for item #" + nextItemNum + ":");
+        currentTotalLabel.setText("Current Subtotal for " + cart.size() + " items(s):");
         addButton.setText("Add Item #" + nextItemNum);
+        searchButton.setText("Search for Item #" + nextItemNum);
     }
 
     private void searchItem() {
@@ -107,11 +125,13 @@ public class MainFrame extends JFrame {
         }
 
         if (foundItem == null) {
-            JOptionPane.showMessageDialog(this, "Item not found in inventory!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Item ID " + itemId +  " not found in inventory!", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (foundItem.getQuantity() < quantity) {
-            JOptionPane.showMessageDialog(this, "Not enough stock available!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Not enough stock available for that item!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            previousItem.setText(foundItem.getItemId() + " " + foundItem.getDescription() + " " + foundItem.getPrice() + " " + foundItem.getQuantity());
             // Display item details or enable "Add to Cart" button
+            // Also disable search button
             JOptionPane.showMessageDialog(this, "Item found: " + foundItem.getDescription(), "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -130,32 +150,26 @@ public class MainFrame extends JFrame {
             }
         }
 
-        if (foundItem == null) {
-            JOptionPane.showMessageDialog(this, "Item not found in inventory!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (foundItem.getQuantity() < quantity) {
-            JOptionPane.showMessageDialog(this, "Not enough stock available!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            // Add item to cart
-            Item cartItem = new Item(foundItem.getItemId(), foundItem.getDescription(), foundItem.getInStock(), quantity, foundItem.getPrice());
-            cart.add(cartItem);
+        // Add item to cart
+        Item cartItem = new Item(foundItem.getItemId(), foundItem.getDescription(), foundItem.getInStock(), quantity, foundItem.getPrice());
+        cart.add(cartItem);
 
-            // Update UI
+        // Update UI
 
-            updateCartTable();
+        updateCartTable();
 
-            // Clear input fields
-            itemIdField.setText("");
-            quantityField.setText("");
-        }
+        // Clear input fields
+        quantityField.setText("");
+        itemIdField.setText("");
+
         updateItemNumber();
     }
 
     private void updateCartTable() {
-        DefaultTableModel model = (DefaultTableModel) cartTable.getModel();
-        model.setRowCount(0); // Clear existing rows
+        tableModel.setRowCount(0);// Clear existing rows
 
         for (Item item : cart) {
-            model.addRow(new Object[]{
+            tableModel.addRow(new Object[]{
                     item.getItemId(),
                     item.getDescription(),
                     item.getPrice(),
@@ -196,12 +210,17 @@ public class MainFrame extends JFrame {
     private void deleteItem() {
         if (!cart.isEmpty()) {
             cart.removeLast();
+            updateCartTable();
             updateItemNumber();
+            // update current subtotal
         }
     }
 
     private void clearCart() {
         cart.clear();
+        updateCartTable();
         updateItemNumber();
+        // update current subtotal
+
     }
 }

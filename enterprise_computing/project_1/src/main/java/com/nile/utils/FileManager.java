@@ -13,7 +13,7 @@ public class FileManager {
 
         InputStream inputStream = FileManager.class.getClassLoader().getResourceAsStream(filename);
         if (inputStream == null) {
-            throw new FileNotFoundException("Could not find resource: " + filename);
+            throw new FileNotFoundException("Could not find file: " + filename);
         }
         try (InputStreamReader reader = new InputStreamReader(inputStream);
              CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT
