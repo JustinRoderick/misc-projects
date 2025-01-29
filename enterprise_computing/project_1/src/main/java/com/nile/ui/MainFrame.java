@@ -17,8 +17,9 @@ public class MainFrame extends JFrame {
     private int item_num = 1;
     private JTable cartTable;
     private JTextField itemIdField, quantityField;
-    private JLabel itemIdLabel, quantityLabel;
-    private JButton addButton;
+    private JTextArea previousItem, currentTotal;
+    private JLabel itemIdLabel, quantityLabel, previousItemLabel, currentTotalLabel;
+    private JButton addButton, searchButton;
 
     public MainFrame() {
         setTitle("Nile Dot Com");
@@ -35,16 +36,24 @@ public class MainFrame extends JFrame {
         JPanel inputPanel = new JPanel(new GridLayout(2, 2));
         itemIdField = new JTextField();
         quantityField = new JTextField();
+        previousItem = new JTextArea();
+        currentTotal = new JTextArea();
         itemIdLabel = new JLabel("Enter Item ID for item #1:");
         quantityLabel = new JLabel("Enter quantity for item #1:");
+        previousItemLabel = new JLabel("Details for item #1:");
+        currentTotalLabel = new JLabel("Current Subtotal for " + cart.size() + " items(s)");
         inputPanel.add(itemIdLabel);
         inputPanel.add(itemIdField);
         inputPanel.add(quantityLabel);
         inputPanel.add(quantityField);
+        inputPanel.add(previousItemLabel);
+        inputPanel.add(previousItem);
+        inputPanel.add(currentTotalLabel);
+        inputPanel.add(currentTotal);
 
 
-        JButton searchButton = new JButton("Search");
-        addButton = new JButton("Add Item #");
+        searchButton = new JButton("Search for Item #1");
+        addButton = new JButton("Add Item #1 to Cart");
         JButton deleteButton = new JButton("Delete Last Item added to Cart");
         JButton emptyCartButton = new JButton("Empty Cart");
         JButton checkoutButton = new JButton("Check Out");
