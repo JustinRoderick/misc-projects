@@ -34,6 +34,28 @@ public class FileManager {
     }
 
     public static void logTransaction(String filename, String data) throws IOException {
-        Files.write(Paths.get(filename), (data + "\n").getBytes(), StandardOpenOption.APPEND);
+        //Files.write(Paths.get(filename), (data + "\n").getBytes(), StandardOpenOption.APPEND);
+//        String resourcesPath = new File(FileManager.class.getClassLoader()
+//                .getResource("").getPath()).getAbsolutePath();
+//        Path filePath = Paths.get(resourcesPath, filename);
+//
+//        // Append the transaction data
+//        try (BufferedWriter writer = Files.newBufferedWriter(filePath,
+//                java.nio.file.StandardOpenOption.APPEND);
+//
+//             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+//
+//            // Split the data string into fields and write as CSV
+//            String[] fields = data.split(",");
+//            csvPrinter.printRecord((Object[]) fields);
+//            csvPrinter.flush();
+//        }
+//    }
+        Path path = Paths.get(filename);
+        if (!Files.exists(path)) {
+            Files.createFile(path);
+        }
+        Files.write(path, data.getBytes(), StandardOpenOption.APPEND);
+
     }
 }
