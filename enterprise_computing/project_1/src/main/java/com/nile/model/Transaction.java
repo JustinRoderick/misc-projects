@@ -12,7 +12,7 @@ public class Transaction {
     private double total;
 
     public Transaction(List<Item> items, double total) {
-        this.timestamp = ZonedDateTime.now(ZoneId.of("America/New_York")); // Use ZonedDateTime with EST timezone
+        this.timestamp = ZonedDateTime.now(ZoneId.of("America/New_York"));
         this.transactionId = generateTransactionId();
         this.items = items;
         this.total = total;
@@ -25,7 +25,6 @@ public class Transaction {
 
     public String toCSV() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy, h:mm:ssa z");
-        DateTimeFormatter csvDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         StringBuilder sb = new StringBuilder();
         for (Item item : items) {

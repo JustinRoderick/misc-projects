@@ -1,3 +1,10 @@
+/*
+Name: Justin Roderick
+Course: CNT 4714 – Spring 2025
+Assignment title: Project 1 – An Event-driven Enterprise Simulation
+Date: Wed January 29, 2025
+ */
+
 package com.nile.ui;
 
 import com.nile.model.Item;
@@ -10,7 +17,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
@@ -18,7 +24,6 @@ import java.time.ZoneId;
 public class MainFrame extends JFrame {
     private List<Item> cart = new ArrayList<>();
     private List<Item> Inventory;
-    private int item_num = 1;
     private JTable cartTable;
     private DefaultTableModel tableModel;
     private JTextField itemIdField, quantityField;
@@ -28,7 +33,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         setTitle("Nile Dot Com");
-        setSize(1200, 600);
+        setSize(1300, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         try{
@@ -62,7 +67,6 @@ public class MainFrame extends JFrame {
         inputPanel.add(currentTotalLabel);
         inputPanel.add(currentTotal);
 
-
         searchButton = new JButton("Search for Item #1");
         addButton = new JButton("Add Item #1 to Cart");
         deleteButton = new JButton("Delete Last Item added to Cart");
@@ -73,24 +77,26 @@ public class MainFrame extends JFrame {
         deleteButton.setEnabled(false);
         checkoutButton.setEnabled(false);
 
-
-
-//       String[] columns = {"Item ID", "Description", "Price", "Quantity"};
-//        cartTable = new JTable(new Object[0][4], columns);
         cartStatusLabel = new JLabel("Your Shopping Cart is currently empty");
 
-        String[] columns = {"Item#", "SKU", "Description", "Price Each", "Qty", "Discount%", "Total"};
+        String[] columns = {"Item#", "SKU", "Description", "Price Each", "Qty", "Discount %", "Total"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
         cartTable = new JTable(tableModel);
 
-
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new BorderLayout());
+        northPanel.add(inputPanel, BorderLayout.NORTH);
+        cartStatusLabel = new JLabel("Your Shopping Cart is currently empty");
+        cartStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        cartStatusLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        northPanel.add(cartStatusLabel, BorderLayout.SOUTH);
         setLayout(new BorderLayout());
-        add(inputPanel, BorderLayout.NORTH);
-        //add(cartStatusLabel, BorderLayout.NORTH);
+        add(northPanel, BorderLayout.NORTH);
         add(new JScrollPane(cartTable), BorderLayout.CENTER);
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(searchButton);
@@ -114,10 +120,9 @@ public class MainFrame extends JFrame {
         deleteButton.setEnabled(!cartEmpty);
         checkoutButton.setEnabled(!cartEmpty);
         emptyCartButton.setEnabled(!cartEmpty);
-        addButton.setEnabled(false); // Reset after each addition
+        addButton.setEnabled(false);
         searchButton.setEnabled(true);
 
-        // Update cart status text
         if(cartEmpty) {
             cartStatusLabel.setText("Your Shopping Cart is currently empty");
         } else {
@@ -168,8 +173,6 @@ public class MainFrame extends JFrame {
             ));
             addButton.setEnabled(true);
             searchButton.setEnabled(false);
-            // Display item details or enable "Add to Cart" button
-            // Also disable search button
             JOptionPane.showMessageDialog(this, "Item found: " + foundItem.getDescription(), "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -185,7 +188,6 @@ public class MainFrame extends JFrame {
         String itemId = itemIdField.getText().trim();
         int quantity = Integer.parseInt(quantityField.getText().trim());
 
-        // Find the item in the inventory
         Item foundItem = null;
         for (Item item : Inventory) {
             if (item.getItemId().equalsIgnoreCase(itemId)) {
@@ -193,21 +195,14 @@ public class MainFrame extends JFrame {
                 break;
             }
         }
-
-        // Add item to cart
         Item cartItem = new Item(foundItem.getItemId(), foundItem.getDescription(), foundItem.getInStock(), quantity, foundItem.getPrice());
         cart.add(cartItem);
-
-        // Update UI
 
         updateCartTable();
         updateButtonStates();
         updateSubtotalDisplay();
-
-        // Clear input fields
         quantityField.setText("");
         itemIdField.setText("");
-
         updateItemNumber();
     }
 
@@ -283,7 +278,6 @@ public class MainFrame extends JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error saving transaction!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
         // Reset UI
         cart.clear();
         updateCartTable();
@@ -293,82 +287,7 @@ public class MainFrame extends JFrame {
         previousItem.setText("");
         itemIdField.setEnabled(true);
         quantityField.setEnabled(true);
-
     }
-
-//    private void checkout() {
-//        // Calculate total and log transaction
-////        if (cart.isEmpty()) {
-////            JOptionPane.showMessageDialog(this, "Cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
-////            return;
-////        }
-////
-////        // Calculate total
-////        double total = TaxDiscountsCalculator.calculateTotal(cart);
-////
-////        // Create transaction
-////        Transaction transaction = new Transaction(cart, total);
-////
-////        // Log transaction
-////        try {
-////            FileManager.logTransaction("transactions.csv", transaction.toCSV());
-////        } catch (IOException e) {
-////            JOptionPane.showMessageDialog(this, "Failed to log transaction!", "Error", JOptionPane.ERROR_MESSAGE);
-////        }
-////
-////        // Show invoice
-////        JOptionPane.showMessageDialog(this, "Total: $" + total, "Invoice", JOptionPane.INFORMATION_MESSAGE);
-////
-////        // Clear cart
-////        cart.clear();
-////        updateItemNumber();
-////        updateCartTable();
-////    }
-//        if (cart.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//
-//        // Calculate total
-//        double total = TaxDiscountsCalculator.calculateTotal(cart);
-//
-//        // Create transaction
-//        Transaction transaction = new Transaction(cart, total);
-//
-//        // Log transaction
-//        try {
-//            FileManager.logTransaction("transactions.csv", transaction.toCSV());
-//
-//            // Show invoice
-//            StringBuilder receipt = new StringBuilder();
-//            receipt.append("Items:\n");
-//            for (Item item : cart) {
-//                receipt.append(String.format("%s x%d: $%.2f\n",
-//                        item.getDescription(),
-//                        item.getQuantity(),
-//                        item.getPrice() * item.getQuantity()));
-//            }
-//            receipt.append("\nTotal: $").append(String.format("%.2f", total));
-//
-//            JOptionPane.showMessageDialog(this,
-//                    receipt.toString(),
-//                    "Transaction Complete",
-//                    JOptionPane.INFORMATION_MESSAGE);
-//
-//            // Clear cart only if transaction was successful
-//            cart.clear();
-//            updateItemNumber();
-//            updateCartTable();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            JOptionPane.showMessageDialog(this,
-//                    "Failed to log transaction: " + e.getMessage(),
-//                    "Error",
-//                    JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-
 
     private void deleteItem() {
         if (!cart.isEmpty()) {
@@ -377,7 +296,6 @@ public class MainFrame extends JFrame {
             updateItemNumber();
             updateButtonStates();
             updateSubtotalDisplay();
-          // update current subtotal
         }
     }
 
@@ -387,9 +305,8 @@ public class MainFrame extends JFrame {
         updateItemNumber();
         updateButtonStates();
         updateSubtotalDisplay();
-        // update current subtotal
-
     }
+
     private void updateSubtotalDisplay() {
         double subtotal = TaxDiscountsCalculator.calculateTotal(cart) / 1.06;
         currentTotal.setText(String.format("$%.2f", subtotal));

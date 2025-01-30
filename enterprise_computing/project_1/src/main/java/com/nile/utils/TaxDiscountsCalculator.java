@@ -7,9 +7,11 @@ public class TaxDiscountsCalculator {
     public static double calculateTotal(List<Item> items) {
         double subtotal = 0;
         for(Item item : items) {
+            // Calculate discount based on item quant
             double discount = calculateDiscount(item.getQuantity());
             subtotal += item.getPrice() * item.getQuantity() * (1 - discount);
         }
+        // Add tax
         return subtotal * 1.06;
     }
 
