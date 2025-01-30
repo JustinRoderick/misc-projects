@@ -157,8 +157,10 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Item ID " + itemId +  " not found in inventory!", "Error", JOptionPane.ERROR_MESSAGE);
             quantityField.setText("");
             itemIdField.setText("");
+        } else if (!foundItem.getInStock()){
+            JOptionPane.showMessageDialog(this, "Sorry... That item is currently out of stock!", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (foundItem.getQuantity() < quantity) {
-            JOptionPane.showMessageDialog(this, "Not enough stock available for that item!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Not enough stock available for that item! Only "+ foundItem.getQuantity()+" on hand currently.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             double discount = calculateDiscount(quantity);
             double itemTotal = quantity * foundItem.getPrice() * (1 - discount);
@@ -296,6 +298,8 @@ public class MainFrame extends JFrame {
             updateItemNumber();
             updateButtonStates();
             updateSubtotalDisplay();
+            previousItem.setText("");
+            previousItemLabel.setText("Details for item #" + cart.size()  + ":");
         }
     }
 
