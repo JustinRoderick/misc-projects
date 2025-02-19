@@ -11,24 +11,30 @@ package org.railroad;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Train implements Runnable {
+
+    private static final AtomicInteger dispatchCounter = new AtomicInteger(1);
     private int number;
     private int inbound;
     private int outbound;
     private List<Integer> requiredSwitches;
     private SwitchManager switchManager;
     private boolean onPermanentHold = false;
+    private boolean dispatched;
+    private int dispatchSequence;
+    private boolean isOnHold;
 
     public Train(int number, int inbound, int outbound, List<Integer> requiredSwitches, SwitchManager switchManager) {
         this.number = number;
         this.inbound = inbound;
         this.outbound = outbound;
-        this.requiredSwitches = requiredSwitches;
         this.switchManager = switchManager;
-        if (requiredSwitches == null) {
-            this.onPermanentHold = true;
-        }
+        this.requiredSwitches = requiredSwitches;
+        this.onPermanentHold = (requiredSwitches == null);
+        this.dispatched = false;
+        this.isOnHold = false;
     }
 
     @Override
@@ -38,7 +44,7 @@ public class Train implements Runnable {
             return;
         }
 
-        while (true) {
+        while (!dispatched) {
 
             if (!switchManager.lockSwitch(requiredSwitches.get(0))) {
                 System.out.println("Train " + number + ": UNABLE TO LOCK first required switch: Switch " + requiredSwitches.get(0) + ". Train will wait...");
@@ -79,9 +85,20 @@ public class Train implements Runnable {
             System.out.println("Train " + number + ": Unlocks/releases lock on Switch " + requiredSwitches.get(2) + ".");
             System.out.println("Train " + number + ": Has been dispatched and moves on down the line out of yard control into CTC.");
             System.out.println("@ @ @ TRAIN " + number + ": DISPATCHED @ @ @");
+            dispatched = true;
+            dispatchSequence = dispatchCounter.getAndIncrement();
+            isOnHold = false;
             break;
         }
     }
+
+    public int getNumber() { return number; }
+    public int getInbound() { return inbound; }
+    public int getOutbound() { return outbound; }
+    public boolean isDispatched() { return dispatched; }
+    public boolean isOnHold() { return isOnHold || onPermanentHold; }
+    public int getDispatchSequence() { return dispatchSequence; }
+    public List<Integer> getSwitches() { return requiredSwitches; }
 
     private void waitSomeTime() {
         try {

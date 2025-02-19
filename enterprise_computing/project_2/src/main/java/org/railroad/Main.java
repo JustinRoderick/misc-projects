@@ -9,10 +9,12 @@ Description: a description of what the class provides would normally be expected
 
 package org.railroad;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -39,5 +41,33 @@ public class Main {
         }
 
         System.out.println("$ $ $ SIMULATION ENDS $ $ $");
+        printSummary(trains);
+
+    }
+
+    private static void printSummary(List<Train> trains) {
+        System.out.println("\nSummary:");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+        trains.forEach(train -> {
+            System.out.printf("Train Number %d:\n", train.getNumber());
+            System.out.printf("%-15s %-15s %-15s %-12s %-12s %-12s %-10s %-15s %-18s%n",
+                    "Train Number", "Inbound Track", "Outbound Track", "Switch 1", "Switch 2", "Switch 3",  "Hold", "Dispatched",
+                    "Dispatch Sequence");
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
+            List switches = train.getSwitches() != null ? train.getSwitches() : Arrays.asList(0, 0, 0);
+            System.out.printf("%-15d %-15d %-15d %-12s %-12s %-12s %-10s %-15s %-18s%n",
+                    train.getNumber(),
+                    train.getInbound(),
+                    train.getOutbound(),
+                    switches.get(0),
+                    switches.get(1),
+                    switches.get(2),
+                    train.isOnHold() ? "True" : "False",
+                    train.isDispatched() ? "True" : "False",
+                    train.getDispatchSequence()
+            );
+            System.out.println();
+        });
     }
 }
