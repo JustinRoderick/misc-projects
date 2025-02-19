@@ -3,8 +3,8 @@ Name: Justin Roderick
 Course: CNT 4714 Spring 2025
 Assignment title: Project 2 – Multi-threaded programming in Java
 Date: February 18, 2025
-Class: Main
-Description: a description of what the class provides would normally be expected.
+Class: SwitchManager
+Description: Manages the logic behind the switches
 */
 
 package org.railroad;

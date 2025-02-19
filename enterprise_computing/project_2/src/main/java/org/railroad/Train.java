@@ -4,7 +4,7 @@ Course: CNT 4714 Spring 2025
 Assignment title: Project 2 – Multi-threaded programming in Java
 Date: February 18, 2025
 Class: Train
-Description: a description of what the class provides would normally be expected.
+Description: Represents a Train object and has the logic to run a train through the simulation
 */
 
 package org.railroad;
