@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class OperationsLogger {
-    private static final String PROJECT3APP_PROPERTIES = "project3app.properties";
+    private static final String OPERATIONSLOG_PROPERTIES = "operationslog.properties";
     private static final String UPDATE_QUERY = 
         "INSERT INTO operationscount (login_username, num_queries, num_updates) " +
         "VALUES (?, 1, 0) " +
@@ -30,7 +30,7 @@ public class OperationsLogger {
 
     public static void logOperation(String username, boolean isQuery) {
         try {
-            Properties props = PropertiesLoader.loadProperties(PROJECT3APP_PROPERTIES);
+            Properties props = PropertiesLoader.loadProperties(OPERATIONSLOG_PROPERTIES);
             try (Connection conn = DatabaseConnection.getConnection(
                     props, 
                     props.getProperty("user.username"), 
