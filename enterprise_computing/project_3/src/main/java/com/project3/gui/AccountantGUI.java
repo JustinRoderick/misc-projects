@@ -32,7 +32,7 @@ public class AccountantGUI extends JFrame {
     private Connection connection;
 
     public AccountantGUI() {
-        setTitle("Operations Monitoring Tool");
+        setTitle("Accountant Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(800, 600);
@@ -63,7 +63,7 @@ public class AccountantGUI extends JFrame {
         // Initialize components
         dbUrlPropertiesCombo = new JComboBox<>(new String[]{DB_PROPERTIES});
         userPropertiesCombo = new JComboBox<>(new String[]{USER_PROPERTIES});
-        dbUrlPropertiesCombo.setEnabled(false);  // Make them uneditable
+        dbUrlPropertiesCombo.setEnabled(false);
         userPropertiesCombo.setEnabled(false);
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
@@ -75,12 +75,12 @@ public class AccountantGUI extends JFrame {
         gbc.insets = new Insets(2, 2, 2, 2);
 
         gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(new JLabel("Properties File:"), gbc);
+        panel.add(new JLabel("DB URL Properties File:"), gbc);
         gbc.gridx = 1;
         panel.add(dbUrlPropertiesCombo, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(new JLabel("Username File:"), gbc);
+        panel.add(new JLabel("User Properties File:"), gbc);
         gbc.gridx = 1;
         panel.add(userPropertiesCombo, gbc);
 

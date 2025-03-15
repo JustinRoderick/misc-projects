@@ -29,10 +29,8 @@ public class PropertiesLoader {
 
     public static boolean validateUserCredentials(String propertiesFile, String username, String password) throws IOException {
         Properties userProps = loadProperties(propertiesFile);
-    
         boolean usernameMatch = username.equals(userProps.getProperty("user.username"));
         boolean passwordMatch = password.equals(userProps.getProperty("user.password"));
-        
         return usernameMatch && passwordMatch;
     }
 } 
