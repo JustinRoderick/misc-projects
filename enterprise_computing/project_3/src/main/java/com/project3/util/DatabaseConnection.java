@@ -39,7 +39,6 @@ public class DatabaseConnection {
             try {
                 connection.close();
             } catch (SQLException e) {
-                // Log error or handle appropriately
                 e.printStackTrace();
             }
         }

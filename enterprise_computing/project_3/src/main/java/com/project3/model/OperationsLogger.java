@@ -44,7 +44,6 @@ public class OperationsLogger {
                 }
             }
         } catch (IOException | SQLException e) {
-            // Log error but don't interrupt the main application flow
             e.printStackTrace();
         }
     }
