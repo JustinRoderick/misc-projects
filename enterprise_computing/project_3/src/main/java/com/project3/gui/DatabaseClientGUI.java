@@ -63,7 +63,7 @@ public class DatabaseClientGUI extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Initialize components
-        dbUrlPropertiesCombo = new JComboBox<>(new String[]{"project3.properties"});
+        dbUrlPropertiesCombo = new JComboBox<>(new String[]{"project3.properties", "bikedb.properties"});
         userPropertiesCombo = new JComboBox<>(new String[]{"root.properties", "client1.properties", "client2.properties"});
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
