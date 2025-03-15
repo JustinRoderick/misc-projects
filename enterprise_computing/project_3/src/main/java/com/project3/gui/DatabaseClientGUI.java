@@ -170,6 +170,16 @@ public class DatabaseClientGUI extends JFrame {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
+            System.out.println("Attempting to connect with:");
+            System.out.println("DB Properties: " + dbPropertiesFile);
+            System.out.println("User Properties: " + userPropertiesFile);
+            System.out.println("Username: " + username);
+            System.out.println("Password length: " + password.length());
+
+            // Load database properties first to check if they're loaded correctly
+            Properties dbProps = PropertiesLoader.loadProperties(dbPropertiesFile);
+            System.out.println("Database URL: " + dbProps.getProperty("db.url"));
+
             // Validate user credentials against properties file
             if (!PropertiesLoader.validateUserCredentials(userPropertiesFile, username, password)) {
                 JOptionPane.showMessageDialog(this, 
@@ -178,9 +188,6 @@ public class DatabaseClientGUI extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Load database properties
-            Properties dbProps = PropertiesLoader.loadProperties(dbPropertiesFile);
             
             // Establish connection
             connection = DatabaseConnection.getConnection(dbProps, username, password);
