@@ -223,13 +223,11 @@ public class AccountantGUI extends JFrame {
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 
-            // Get column names
             Vector<String> columnNames = new Vector<>();
             for (int i = 1; i <= columnCount; i++) {
                 columnNames.add(metaData.getColumnName(i));
             }
 
-            // Get data
             Vector<Vector<Object>> data = new Vector<>();
             while (rs.next()) {
                 Vector<Object> row = new Vector<>();
