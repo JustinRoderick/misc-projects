@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+// Loads the properties files for the client and accountant applications
 public class PropertiesLoader {
     private static final String PROPERTIES_DIR = "properties/";
 
@@ -27,6 +28,7 @@ public class PropertiesLoader {
         return properties;
     }
 
+    // Validates the user credentials from the properties file
     public static boolean validateUserCredentials(String propertiesFile, String username, String password) throws IOException {
         Properties userProps = loadProperties(propertiesFile);
         boolean usernameMatch = username.equals(userProps.getProperty("user.username"));

@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+// Establishes conection to DB
 public class DatabaseConnection {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 

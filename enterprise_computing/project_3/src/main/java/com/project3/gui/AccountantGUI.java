@@ -37,14 +37,12 @@ public class AccountantGUI extends JFrame {
         setLayout(new BorderLayout());
         setSize(800, 600);
 
-        // Create panels
         JPanel topPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         JPanel connectionPanel = createConnectionPanel();
         JPanel commandPanel = createCommandPanel();
         JPanel centerPanel = createCenterPanel();
         JPanel bottomPanel = createBottomPanel();
 
-        // Add panels to frame
         topPanel.add(connectionPanel);
         topPanel.add(commandPanel);
         add(topPanel, BorderLayout.NORTH);
@@ -60,7 +58,6 @@ public class AccountantGUI extends JFrame {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Initialize components
         dbUrlPropertiesCombo = new JComboBox<>(new String[]{DB_PROPERTIES});
         userPropertiesCombo = new JComboBox<>(new String[]{USER_PROPERTIES});
         dbUrlPropertiesCombo.setEnabled(false);
@@ -70,7 +67,6 @@ public class AccountantGUI extends JFrame {
         JButton connectButton = new JButton("Connect to Database");
         JButton disconnectButton = new JButton("Disconnect from Database");
 
-        // Add components to panel
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
 
@@ -101,7 +97,6 @@ public class AccountantGUI extends JFrame {
         gbc.gridy = 5;
         panel.add(disconnectButton, gbc);
 
-        // Add action listeners
         connectButton.addActionListener(e -> connectToDatabase());
         disconnectButton.addActionListener(e -> disconnectFromDatabase());
 
@@ -134,14 +129,12 @@ public class AccountantGUI extends JFrame {
 
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        
-        // Connection status area
+
         connectionStatusArea = new JTextArea(2, 50);
         connectionStatusArea.setEditable(false);
         connectionStatusArea.setBackground(new Color(240, 240, 240));
         panel.add(new JScrollPane(connectionStatusArea), BorderLayout.NORTH);
 
-        // Results table
         resultTable = new JTable();
         panel.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 
@@ -167,7 +160,6 @@ public class AccountantGUI extends JFrame {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
-            // Validate credentials
             if (!PropertiesLoader.validateUserCredentials(USER_PROPERTIES, username, password)) {
                 JOptionPane.showMessageDialog(this,
                     "Invalid credentials for accountant access",
@@ -176,7 +168,6 @@ public class AccountantGUI extends JFrame {
                 return;
             }
 
-            // Load properties and connect
             Properties props = PropertiesLoader.loadProperties(DB_PROPERTIES);
             connection = DatabaseConnection.getConnection(props, username, password);
             

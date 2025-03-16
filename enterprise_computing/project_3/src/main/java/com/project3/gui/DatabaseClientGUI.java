@@ -38,21 +38,18 @@ public class DatabaseClientGUI extends JFrame {
         setLayout(new BorderLayout());
         setSize(800, 600);
 
-        // Create panels
         JPanel topPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         JPanel connectionPanel = createConnectionPanel();
         JPanel commandPanel = createCommandPanel();
         JPanel centerPanel = createCenterPanel();
         JPanel bottomPanel = createBottomPanel();
 
-        // Add panels to frame
         topPanel.add(connectionPanel);
         topPanel.add(commandPanel);
         add(topPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Set up initial state
         updateConnectionStatus("Not Connected");
     }
 
@@ -62,7 +59,6 @@ public class DatabaseClientGUI extends JFrame {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Initialize components
         dbUrlPropertiesCombo = new JComboBox<>(new String[]{"project3.properties", "bikedb.properties"});
         userPropertiesCombo = new JComboBox<>(new String[]{"root.properties", "client1.properties", "client2.properties"});
         usernameField = new JTextField(15);
@@ -70,7 +66,6 @@ public class DatabaseClientGUI extends JFrame {
         JButton connectButton = new JButton("Connect to Database");
         JButton disconnectButton = new JButton("Disconnect from Database");
 
-        // Add components to panel
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
 
@@ -101,7 +96,6 @@ public class DatabaseClientGUI extends JFrame {
         gbc.gridy = 5;
         panel.add(disconnectButton, gbc);
 
-        // Add action listeners
         connectButton.addActionListener(e -> connectToDatabase());
         disconnectButton.addActionListener(e -> disconnectFromDatabase());
 
@@ -134,14 +128,12 @@ public class DatabaseClientGUI extends JFrame {
 
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        
-        // Connection status area
+
         connectionStatusArea = new JTextArea(2, 50);
         connectionStatusArea.setEditable(false);
         connectionStatusArea.setBackground(new Color(240, 240, 240));
         panel.add(new JScrollPane(connectionStatusArea), BorderLayout.NORTH);
 
-        // Results table
         resultTable = new JTable();
         resultScrollPane = new JScrollPane(resultTable);
         panel.add(resultScrollPane, BorderLayout.CENTER);
@@ -176,11 +168,9 @@ public class DatabaseClientGUI extends JFrame {
             System.out.println("Username: " + username);
             System.out.println("Password length: " + password.length());
 
-            // Load database properties first to check if they're loaded correctly
             Properties dbProps = PropertiesLoader.loadProperties(dbPropertiesFile);
             System.out.println("Database URL: " + dbProps.getProperty("db.url"));
 
-            // Validate user credentials against properties file
             if (!PropertiesLoader.validateUserCredentials(userPropertiesFile, username, password)) {
                 JOptionPane.showMessageDialog(this, 
                     "Invalid credentials: Username/password do not match properties file",
@@ -189,7 +179,6 @@ public class DatabaseClientGUI extends JFrame {
                 return;
             }
             
-            // Establish connection
             connection = DatabaseConnection.getConnection(dbProps, username, password);
             currentUsername = username;
             
@@ -245,7 +234,6 @@ public class DatabaseClientGUI extends JFrame {
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
-            // Get column names
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             Vector<String> columnNames = new Vector<>();
@@ -253,7 +241,6 @@ public class DatabaseClientGUI extends JFrame {
                 columnNames.add(metaData.getColumnName(i));
             }
 
-            // Get data
             Vector<Vector<Object>> data = new Vector<>();
             while (rs.next()) {
                 Vector<Object> row = new Vector<>();
@@ -263,10 +250,8 @@ public class DatabaseClientGUI extends JFrame {
                 data.add(row);
             }
 
-            // Update table model
             resultTable.setModel(new DefaultTableModel(data, columnNames));
             
-            // Log the successful query
             OperationsLogger.logOperation(currentUsername, true);
             
         }
@@ -280,7 +265,6 @@ public class DatabaseClientGUI extends JFrame {
                 "Success",
                 JOptionPane.INFORMATION_MESSAGE);
                 
-            // Log the successful update
             OperationsLogger.logOperation(currentUsername, false);
         }
     }

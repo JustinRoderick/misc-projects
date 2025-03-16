@@ -30,6 +30,7 @@ public class OperationsLogger {
 
     public static void logOperation(String username, boolean isQuery) {
         try {
+            // Connects to DB with project3app properties
             Properties props = PropertiesLoader.loadProperties(OPERATIONSLOG_PROPERTIES);
             try (Connection conn = DatabaseConnection.getConnection(
                     props, 
