@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   db:
     image: mysql:8.0
@@ -8,8 +10,33 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mysecretpassword
       MYSQL_DATABASE: project4
+      MYSQL_USER: systemapp
+      MYSQL_PASSWORD: systemapp
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./src/main/resources/sql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+    command: --init-file /docker-entrypoint-initdb.d/init.sql --default-authentication-plugin=mysql_native_password
+
+  tomcat:
+    image: tomcat:10.1-jdk17
+    container_name: "tomcat-server"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/project_4.war:/usr/local/tomcat/webapps/ROOT.war
+      - ./src/main/resources/properties:/usr/local/tomcat/properties
+    depends_on:
+      - db
+    networks:
+      - app-network
+    environment:
+      - CATALINA_OPTS=-Xmx512m
 
 volumes:
   mysql_data:
+
+networks:
+  app-network:
+    driver: bridge

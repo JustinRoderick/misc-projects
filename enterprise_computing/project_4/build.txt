@@ -3,5 +3,5 @@ FOR GRADER
 To build/run project make sure you are in the root dir and then run
 'mvn clean package' to build
 To start the application run
-'java -jar target/client-jar-with-dependencies.jar' for client application
-or 'java -jar target/accountant-jar-with-dependencies.jar' for accountant application
+'docker-compose up -d' to start both the sql and the tomcat containers
+The Web app will be on http://localhost:8080
