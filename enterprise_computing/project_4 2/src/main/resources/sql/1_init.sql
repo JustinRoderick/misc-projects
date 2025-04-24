@@ -29,3 +29,6 @@ GRANT ALL PRIVILEGES ON credentialsDB.* TO 'systemapp'@'%';
 GRANT ALL PRIVILEGES ON project4.* TO 'systemapp'@'%';
 
 FLUSH PRIVILEGES;
+
+-- Source the project4 database script
+source /docker-entrypoint-initdb.d/2_project4DBscript.sql;

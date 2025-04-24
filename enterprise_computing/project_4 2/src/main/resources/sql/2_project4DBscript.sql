@@ -1,13 +1,7 @@
 # SQL commands to create and populate the MySQL database for
 # CNT 4714 - Spring 2025 - Project 4
-#
-# delete the database if it already exists
-drop database if exists project4;
 
-#create a new database named project4
-create database project4;
-
-#switch to the new database
+#switch to the database
 use project4;
 
 #create the schemas for the four relations in this database
@@ -96,8 +90,6 @@ insert into parts values ('P44','link','green',5,'Zurich');
 insert into parts values ('P48','washer','green',1,'Stuttgart');
 insert into parts values ('P53','rod','green',4,'Zandvoort');
 
-
-
 insert into jobs values ('J1','Operation DB',45,'Berlin');
 insert into jobs values ('J6','A New Job',14,'Milan');
 insert into jobs values ('J13','Night Strike',350,'Paris');
@@ -106,7 +98,6 @@ insert into jobs values ('J2','Really Big Job',500,'Melbourne');
 insert into jobs values ('J3','Small Job',100,'Chicago');
 insert into jobs values ('J5','My Job',1,'Orlando');
 insert into jobs values ('J22','Project On-Time',200,'London');
-
 
 insert into shipments values ('S1','P1','J1',40);
 insert into shipments values ('S1','P3','J13',95);
@@ -183,8 +174,6 @@ from suppliers;
 END$$
 DELIMITER ;
 
-
-
 DELIMITER $$
 CREATE  PROCEDURE Get_The_Total_Number_Of_Shipments()
 BEGIN
@@ -192,7 +181,6 @@ select count(*) as The_Total_Number_Of_Shipments
 from shipments;
 END$$
 DELIMITER ;
-
 
 DELIMITER $$
 CREATE  PROCEDURE Get_The_Name_Of_The_Job_With_The_Most_Workers()
@@ -203,7 +191,6 @@ where numworkers = (select max(numworkers) from jobs);
 END$$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE  PROCEDURE List_The_Name_And_Status_Of_All_Suppliers()
 BEGIN
@@ -211,7 +198,6 @@ select sname, status
 from suppliers;
 END$$
 DELIMITER ;
-
 
 # uncomment the following 4 lines if you want to see the results of creating and populating the database
 # select * from suppliers;
